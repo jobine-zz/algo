@@ -88,10 +88,46 @@ void BiTree::PreOrderTraverse(BiTreeNode* root)
     cout << endl;
 }
 
+void BiTree::InOrderTraverse(BiTreeNode* root)
+{
+    assert(root != nullptr);
+
+    stack<BiTreeNode*> s;
+    BiTreeNode* p = root;
+
+    cout << "In-Order: ";
+
+    while (p || !s.empty())
+    {
+        if (p)
+        {
+            s.push(p);
+            p = p->left;
+        }
+        else
+        {
+            p = s.top();
+            s.pop();
+            cout << p->value << " ";
+            p = p->right;
+        }
+    }
+
+    cout << endl;
+}
+
+void BiTree::PostOrderTraverse(BiTreeNode * root)
+{
+    assert(root != nullptr);
+
+
+}
+
 void BiTree::TestPreOrderTraverse()
 {
     BiTree* bt = new BiTree();
-    int values[] = { 2, 5, 1, 3, 4 };
+    int values[] = { 5, 3, 1, 7, 6, 8};
     BiTreeNode* root = bt->CreateByOrder(values, sizeof(values) / sizeof(int));
     bt->PreOrderTraverse(root);
+    bt->InOrderTraverse(root);
 }

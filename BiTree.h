@@ -19,6 +19,8 @@ namespace DataStructure
 
         BiTreeNode* CreateByOrder(int* values, int size);
         void PreOrderTraverse(BiTreeNode* root);
+        void InOrderTraverse(BiTreeNode* root);
+        void PostOrderTraverse(BiTreeNode* root);
 
         static void TestPreOrderTraverse();
     };
