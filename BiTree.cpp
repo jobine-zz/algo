@@ -60,6 +60,19 @@ BiTreeNode* BiTree::CreateByOrder(int* values, int size)
     return root;
 }
 
+BiTreeNode * BiTree::CreateByPreAndInOrder(int * preOrder, int * inOrder, int size)
+{
+    assert(preOrder != nullptr);
+    assert(inOrder != nullptr);
+    assert(size > 0);
+
+    BiTreeNode* p = nullptr;
+
+    p = CreateByPreAndInOrder(preOrder, 0, inOrder, 0, size - 1);
+
+    return p;
+}
+
 void BiTree::PreOrderTraverse(BiTreeNode* root)
 {
     assert(root != nullptr);
@@ -159,4 +172,49 @@ void BiTree::TestPreOrderTraverse()
     bt->PreOrderTraverse(root);
     bt->InOrderTraverse(root);
     bt->PostOrderTraverse(root);
+}
+
+void BiTree::TestBiTree()
+{
+    BiTree* bt = new BiTree();
+    int preOrder[] = { 5, 3, 1, 2, 9, 8, 7 };
+    int inOrder[] = { 1, 3, 2, 5, 8, 9, 7 };
+
+    BiTreeNode* root = bt->CreateByPreAndInOrder(preOrder, inOrder, sizeof(preOrder) / sizeof(int));
+
+    bt->PreOrderTraverse(root);
+    bt->InOrderTraverse(root);
+    bt->PostOrderTraverse(root);
+}
+
+BiTreeNode* BiTree::CreateByPreAndInOrder(int* preOrder, int preOrderIndex, int* inOrder, int inOrderLeftIndex, int inOrderRightIndex)
+{
+    int rootVal = preOrder[preOrderIndex];
+    int inOrderIndex = -1;
+    BiTreeNode* rootNode = new BiTreeNode(rootVal);
+
+    if (inOrderLeftIndex == inOrderRightIndex)
+    {
+        return rootNode;
+    }
+
+    for (int i = inOrderLeftIndex; i < inOrderRightIndex; i++)
+    {
+        if (inOrder[i] == rootVal)
+        {
+            inOrderIndex = i;
+        }
+    }
+
+    if (inOrderIndex == -1)
+    {
+        return nullptr;
+    }
+
+    rootNode->left = CreateByPreAndInOrder(preOrder, preOrderIndex + 1, inOrder, inOrderLeftIndex, inOrderIndex - 1);
+    rootNode->right = CreateByPreAndInOrder(preOrder, preOrderIndex + inOrderIndex - inOrderLeftIndex + 1, inOrder, inOrderIndex + 1, inOrderRightIndex);
+
+    return rootNode;
+    
+
 }
